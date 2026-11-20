@@ -34,7 +34,33 @@
     user-select: none;
     -webkit-user-drag: none;
 }
+/* MOBILE HEADER — SHOW LET'S TALK */
+@media (max-width: 700px) {
+    .navbar .nav-contact {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        font-size: 9px;
+        letter-spacing: 0.5px;
+        padding: 9px 10px;
+    }
 
+    .navbar .nav-actions {
+        margin-left: auto;
+        margin-right: 8px;
+        gap: 8px;
+    }
+
+    .navbar .kamalath-logo img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .navbar .menu-toggle {
+        flex-shrink: 0;
+    }
+}
 /* CENTER NAVIGATION */
 
 .navbar {
