@@ -6,7 +6,35 @@
     object-position: center;
     border-radius: 50%;
     display: block;
+
 }
+
+/* BRANDS — AUTO SCROLL + MANUAL DRAG */
+
+.brands-marquee {
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+}
+
+.brands-marquee:active {
+    cursor: grabbing;
+}
+
+.brands-marquee .brands-track {
+    display: flex;
+    width: max-content;
+    animation: none !important;
+    will-change: transform;
+}
+
+.brands-marquee .brands-track img {
+    flex-shrink: 0;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
 /* CENTER NAVIGATION */
 
 .navbar {
@@ -331,8 +359,8 @@
 }
 
 .kamalath-logo img {
-    width: 55px;
-    height: 55px;
+    width: 90px;
+    height: 90px;
     object-fit: contain;
     display: block;
 }
@@ -1044,6 +1072,11 @@ img {
     background: var(--dark);
 }
 
+.software-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
 .software-list {
     display: flex;
     flex-wrap: wrap;

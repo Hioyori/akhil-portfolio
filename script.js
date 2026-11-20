@@ -268,3 +268,110 @@ document.addEventListener("DOMContentLoaded", () => {
 
 console.log("AKHIL CV Viewer Ready!");
 
+
+/* BRANDS — AUTOMATIC + MANUAL SCROLL */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const marquee = document.getElementById("brandsMarquee");
+    const track = document.getElementById("brandsTrack");
+
+    if (!marquee || !track) return;
+
+    const originalLogos = Array.from(track.children);
+
+    if (!originalLogos.length) return;
+
+    originalLogos.forEach(logo => {
+        const clone = logo.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        clone.alt = "";
+        track.appendChild(clone);
+    });
+
+    let position = 0;
+    let dragging = false;
+    let hovering = false;
+    let lastX = 0;
+    let previousTime = 0;
+
+    const speed = 40;
+
+    function loopWidth() {
+        const first = originalLogos[0];
+        const firstClone = track.children[originalLogos.length];
+
+        return firstClone.offsetLeft - first.offsetLeft;
+    }
+
+    function normalize() {
+        const width = loopWidth();
+        if (width <= 0) return;
+
+        position = ((position % width) + width) % width;
+    }
+
+    function animate(time) {
+        if (!previousTime) previousTime = time;
+
+        const delta = Math.min(
+            (time - previousTime) / 1000,
+            0.05
+        );
+
+        previousTime = time;
+
+        const reducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+        if (!dragging && !hovering &&
+            !document.hidden && !reducedMotion) {
+            position += speed * delta;
+        }
+
+        normalize();
+        track.style.transform = `translateX(${-position}px)`;
+
+        requestAnimationFrame(animate);
+    }
+
+    marquee.addEventListener("pointerdown", event => {
+        if (event.pointerType === "mouse" && event.button !== 0) {
+            return;
+        }
+
+        dragging = true;
+        lastX = event.clientX;
+        marquee.setPointerCapture(event.pointerId);
+    });
+
+    marquee.addEventListener("pointermove", event => {
+        if (!dragging) return;
+
+        position -= event.clientX - lastX;
+        lastX = event.clientX;
+        normalize();
+    });
+
+    function stopDragging() {
+        dragging = false;
+    }
+
+    marquee.addEventListener("pointerup", stopDragging);
+    marquee.addEventListener("pointercancel", stopDragging);
+    marquee.addEventListener("lostpointercapture", stopDragging);
+
+    marquee.addEventListener("mouseenter", () => {
+        hovering = true;
+    });
+
+    marquee.addEventListener("mouseleave", () => {
+        hovering = false;
+    });
+
+    marquee.addEventListener("dragstart", event => {
+        event.preventDefault();
+    });
+
+    requestAnimationFrame(animate);
+});
